@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <link rel="stylesheet" href="login.css" />
+  <link rel="stylesheet" href="footer.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+</head>
+
+<header class="header">
+  <nav class="nav">
+    <img src="logoTiaLoren.png" alt="Logo Tía Loren">
+    <button id="openModal" class="modal-button button">Iniciar Sesión</button>
+  </nav>
+</header>
+
+<body>
+
+<!-- Modal con el formulario de login -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Iniciar Sesión</h2>
+        <form id="loginForm" action="#" method="post">
+            <div class="input-container">
+                <i class="uil uil-user"></i>
+                <input type="text" id="username" name="username" placeholder="Introduce tu usuario" required>
+            </div>
+            <div class="input-container">
+                <i class="uil uil-lock"></i>
+                <input type="password" id="password" name="password" placeholder="Introduce tu contraseña" required>
+                <i class="uil uil-eye-slash show-password" onclick="togglePasswordVisibility()"></i>
+            </div>
+            <div class="remember-me">
+                <a href="mailto:fundacionsociallatialoren@gmail.com?subject=Solicitud%20de%20restablecimiento%20de%20clave&body=Quiero%20restablecer%20la%20clave" class="forgot-password">¿Olvidaste tu contraseña?</a>
+            </div>
+            <button type="submit" class="submit-btn">Iniciar Ahora</button>
+        </form>
+    </div>
+</div>
+<br>
+<!-- Banner -->
+<div class="banner">
+    <img src="Banner_FUND_2.jpg" alt="Banner">
+</div> 
+
+<script>
+    // Mostrar el modal
+    var modal = document.getElementById("myModal");
+    var btn = document.getElementById("openModal");
+    var span = document.getElementsByClassName("close")[0];
+
+    btn.onclick = function() {
+      modal.style.display = "block";
+    }
+
+    // Cerrar el modal
+    span.onclick = function() {
+      modal.style.display = "none";
+    }
+
+    // Cerrar el modal si se hace clic fuera del contenido del modal
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    // Lógica de login
+    document.getElementById('loginForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const response = await fetch('/backend/authentication.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        window.location.href = '../formulario/index.html';
+      } else {
+        alert('Credenciales incorrectas');
+      }
+    });
+
+    // Mostrar/ocultar la contraseña
+    function togglePasswordVisibility() {
+      const passwordField = document.getElementById('password');
+      const icon = document.querySelector('.show-password');
+      if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        icon.classList.remove('uil-eye-slash');
+        icon.classList.add('uil-eye');
+      } else {
+        passwordField.type = 'password';
+        icon.classList.remove('uil-eye');
+        icon.classList.add('uil-eye-slash');
+      }
+    }
+</script>
+
+</body>
+
+<footer>
+  <div class="content">
+      <div class="left box">
+          <div class="upper">
+              <div class="topic">Acerca de nosotros</div>
+              <p>Somos una organización sin ánimo de lucro</p>
+          </div>
+          <div class="lower">
+              <div class="topic">Contactanos</div>
+              <div class="phone">
+                  <a href="#"><i class="fas fa-phone"></i>(+57) 3202509998</a>
+              </div>
+              <div class="email">
+                  <a href="#"><i class="fas fa-envelope"></i>fundacionsociallatialoren@gmail.com</a>
+              </div>
+          </div>
+      </div>
+      <div class="middle box">
+          <div class="topic">Nuestros proyectos</div>
+          <div><a href="#">Proyecto nutricional</a></div>
+          <div><a href="#">Proyecto ecológico</a></div>
+          <div><a href="#">Proyecto un sueño hecho realidad</a></div>
+          <div><a href="#">Proyecto recreativo</a></div>
+          <div><a href="#">Proyecto rural</a></div>
+          <div><a href="#">Proyecto jornada alterna</a></div>
+      </div>
+      <div class="right box">
+          <div class="topic">Regístrate</div>
+          <form action="#">
+              <input type="submit" name="" value="Formulario">
+              <div class="media-icons">
+                  <a href="https://www.facebook.com/fundacionsociallatialoren/" target="_blank"><i
+                          class="fab fa-facebook-f"></i></a>
+                  <a href="https://www.instagram.com/fundaciontialoren/" target="_blank"><i
+                          class="fab fa-instagram"></i></a>
+                  <a href="https://youtube.com/@fundaciontialoren8281" target="_blank"><i
+                          class="fab fa-youtube"></i></a>
+              </div>
+          </form>
+      </div>
+  </div>
+  <div class="bottom">
+      <p>Copyright ©2024 <a href="#">Tía Loren</a> Todos los derechos reservados</p>
+  </div>
+</footer>
+
+</html>
